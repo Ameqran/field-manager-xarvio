@@ -1,0 +1,42 @@
+name: parity
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & test with docker compose
+        run: |
+          docker compose up --build --abort-on-container-exit --exit-code-from karate
+      - name: Prepare site (copy Karate HTML)
+        if: always()
+        run: |
+          mkdir -p site
+          cp -R karate/target/karate-reports/* site/
+          if [ -f site/karate-summary.html ]; then cp site/karate-summary.html site/index.html; fi
+      - name: Upload GitHub Pages artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+  deploy:
+    needs: parity
+    if: always()
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
