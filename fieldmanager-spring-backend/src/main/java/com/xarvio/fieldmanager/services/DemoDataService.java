@@ -21,7 +21,7 @@ public class DemoDataService {
 
     @PostConstruct
     void init() {
-        var field1Summary = new FieldSummary(UUID.randomUUID(), "North Farm");
+        var field1Summary = new FieldSummary(UUID.fromString("d1234567-89ab-4cde-f012-3456789abcde"), "North Farm");
         var field1 = new Field(
                 field1Summary,
                 new ZoneData(new double[] { 0.65, 0.70, 0.80, 0.75 },
@@ -37,7 +37,7 @@ public class DemoDataService {
                         "P", 60.0,
                         "K", 80.0), List.of("Urea", "DAP", "MOP")),
                 new ProtectionRecommendation("Medium", "Low", List.of("Fungicide A", "Insecticide B")));
-        var field2Summary = new FieldSummary(UUID.randomUUID(), "South Field");
+        var field2Summary = new FieldSummary(UUID.fromString("d1234567-89ab-4cde-f012-3456789abcda"), "South Field");
         var field2 = new Field(
                 field2Summary,
                 new ZoneData(new double[] { 0.55, 0.60, 0.50, 0.65 },

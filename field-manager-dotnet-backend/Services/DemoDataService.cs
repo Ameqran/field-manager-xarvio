@@ -23,7 +23,7 @@ namespace FieldManagerDotnetBackend.Services
             {
                 new Field
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("d1234567-89ab-4cde-f012-3456789abcde"),
                     Name = "North Farm",
                     ZoneData = new ZoneData
                     {
@@ -61,7 +61,7 @@ namespace FieldManagerDotnetBackend.Services
                 },
                 new Field
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("d1234567-89ab-4cde-f012-3456789abcda"),
                     Name = "South Field",
                     ZoneData = new ZoneData
                     {

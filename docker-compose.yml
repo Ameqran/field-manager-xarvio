@@ -18,12 +18,25 @@ services:
       timeout: 3s
       retries: 20
 
-  tester:
-    build: ./tester
-    image: fm-tester
+  karate:
+    build: ./karate
+    image: fm-karate
     depends_on:
       - dotnet
       - spring
+    environment:
+      LEGACY_BASE: http://dotnet:5000
+      MODERN_BASE: http://spring:8080
+    # collect reports to host
     volumes:
-      - ./tester/out:/out
-    command: ["http://dotnet:5000", "http://spring:8080", "/out"]
+      - ./karate/target:/karate/target
+
+  # tester:
+  #   build: ./tester
+  #   image: fm-tester
+  #   depends_on:
+  #     - dotnet
+  #     - spring
+  #   volumes:
+  #     - ./tester/out:/out
+  #   command: ["http://dotnet:5000", "http://spring:8080", "/out"]
