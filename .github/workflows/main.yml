@@ -18,6 +18,12 @@ jobs:
       - name: Build & test with docker compose
         run: |
           docker compose up --build --abort-on-container-exit --exit-code-from karate
+      - name: Archive Karate reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-reports
+          path: karate/target/karate-reports/
       - name: Prepare site (copy Karate HTML)
         if: always()
         run: |

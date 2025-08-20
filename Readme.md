@@ -162,6 +162,7 @@ Karate checks this by calling both services and doing a deep JSON match. If ther
 
 * The job fails if Karate fails.
 * You get the nice HTML report as an artifact.
+* The Karate report will be deployed into github pages [`Karate Report`](https://ameqran.github.io/field-manager-xarvio/).
 
 ---
 
@@ -171,7 +172,7 @@ Karate checks this by calling both services and doing a deep JSON match. If ther
 
 * Use **JWT/OAuth2** in both stacks. In tests, get a token once, save to a Karate variable, and add `Authorization: Bearer ...` to each request.
 * Test authZ (roles/claims) by running Karate with different tokens.
-* Keep error format consistent (e.g., `application/problem+json`).
+* Keep error format consistent.
 
 ### 8.2 Database
 
@@ -211,10 +212,9 @@ Karate checks this by calling both services and doing a deep JSON match. If ther
 
 ## 10) Next steps
 
-* Add security to both stacks; update Karate to send a JWT.
-* Swap in Postgres (both stacks) and seed the same demo data.
+* Add security; update Karate to send a JWT.
+* Swap in Postgres and seed the same demo data.
 * Add one async flow (Kafka) and a REST check for the resulting state.
-* Put the compose job into your CI. Publish the Karate HTML.
 * Add a small API gateway (Traefik or Spring Cloud Gateway) to flip traffic from .NET to Spring per route.
 
 ---
