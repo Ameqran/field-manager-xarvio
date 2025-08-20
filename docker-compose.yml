@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  dotnet:
+    build: ./field-manager-dotnet-backend
+    image: fm-dotnet
+    ports:
+      - "5000:5000"
+
+  spring:
+    build: ./fieldmanager-spring-backend
+    image: fm-spring
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/fields"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  tester:
+    build: ./tester
+    image: fm-tester
+    depends_on:
+      - dotnet
+      - spring
+    volumes:
+      - ./tester/out:/out
+    command: ["http://dotnet:5000", "http://spring:8080", "/out"]
