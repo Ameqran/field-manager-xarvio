@@ -4,6 +4,6 @@ import java.util.List;
 
 public record ProtectionRecommendation(
         String diseaseRisk,
-        String InsectRisk,
+        String insectRisk,
         List<String> recommendedProducts) {
 }

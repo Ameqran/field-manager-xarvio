@@ -5,5 +5,5 @@ import java.util.Map;
 
 public record NutritionRecommendation(
         Map<String, Double> nutrientRequirements,
-        List<String> suggestedFerilizers) {
+        List<String> suggestedFertilizers) {
 }
