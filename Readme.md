@@ -124,6 +124,75 @@ mvn -q -Dlegacy=http://localhost:5000 -Dmodern=http://localhost:8080 test
 
 Karate checks this by calling both services and doing a deep JSON match. If there is a mismatch (e.g., `insectRisk` vs `InsectRisk`, or a typo), the report will show a clear diff.
 
+   ```mermaid
+---
+config:
+  look: neo
+  layout: elk
+---
+flowchart LR
+ subgraph S1["Step 1 — Golden Record Creation"]
+    direction LR
+        J["JSON snippets"]
+        ST["HTTP Status Codes 200 · 201 · 404 · 500"]
+        HD["Headers : Content-Type · X-Trace · Cache-Control"]
+        GR[["🟡 Golden Responses : Trusted Truth — Frozen Snapshots"]]
+  end
+ subgraph S2["Step 2 — Dual System Testing"]
+    direction TB
+        KAR["👊 Karate Test Suite (Same Test Suite, Different Base URLs)"]
+        NET[".NET Legacy Service"]
+        SPR["Spring Boot New Service"]
+        LEGDB[("Legacy Database")]
+  end
+ subgraph S3["Step 3 — Comparison Engine"]
+    direction TB
+        RN["Response A (.NET)"]
+        RS["Response B (Spring)"]
+        DIFF["🔍 Comparison / Diff Engine Side-by-side JSON view"]
+        DEC{"Exact Match?"}
+        PASS["✅ Build Passes"]
+        FAIL["❌ Build Fails"]
+  end
+    J --> GR
+    ST --> GR
+    HD --> GR
+    KAR -- BaseURL: /dotnet --> NET
+    KAR -- BaseURL: /spring --> SPR
+    NET -- Fetch Data --> LEGDB
+    SPR -- Fetch Data --> LEGDB
+    RN --> DIFF
+    RS --> DIFF
+    DIFF --> DEC
+    DEC -- Yes --> PASS
+    DEC -- No --> FAIL
+    S1 -- Golden snapshots feed tests --> S2
+    S2 -- Captured responses --> S3
+     J:::compare
+     ST:::compare
+     HD:::compare
+     GR:::golden
+     KAR:::tests
+     NET:::legacy
+     SPR:::spring
+     LEGDB:::legacy
+     RN:::legacy
+     RS:::spring
+     DIFF:::compare
+     DEC:::compare
+     PASS:::success
+     FAIL:::failure
+    classDef golden fill:#FFE08A,stroke:#E5B95C,color:#1F2937,rx:14,ry:14
+    classDef legacy fill:#D9ECFF,stroke:#9CC4E4,color:#0D2A42,rx:12,ry:12
+    classDef spring fill:#E6F6EA,stroke:#B5E3C4,color:#064E3B,rx:12,ry:12
+    classDef tests fill:#EDEBFF,stroke:#CFC5FF,color:#312E81,rx:12,ry:12
+    classDef compare fill:#F6F8FA,stroke:#CBD5E1,color:#111827,rx:12,ry:12
+    classDef success fill:#D1FADF,stroke:#86EFAC,color:#065F46,rx:10,ry:10
+    classDef failure fill:#FEE2E2,stroke:#FCA5A5,color:#7F1D1D,rx:10,ry:10
+    classDef bottom fill:#F3F4F6,stroke:#E5E7EB,color:#111827,rx:16,ry:16
+    classDef invisible fill:transparent,stroke:transparent,color:transparent
+
+```
 ---
 
 ## 5) Migration strategy (expert but simple to follow)
